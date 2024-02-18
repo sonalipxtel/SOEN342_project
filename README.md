@@ -8,7 +8,7 @@
   </tr>
 
   <tr>
-    <td>Jenisha</td>
+    <td>Jenisha Sivalingam</td>
     <td>40247927</td>
     <td>jenisha.siv@gmail.com</td>
   </tr>
