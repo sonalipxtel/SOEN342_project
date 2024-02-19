@@ -16,10 +16,10 @@
   </tr>
 
  <tr>
-    <td>name</td>
-    <td>id</td>
-    <td>course</td>
-    <td>email</td>
+    <td>Noah Burns</td>
+    <td>40237138</td>
+    <td>GG</td>
+    <td>n14burns@gmail.com</td>
   </tr>
 
    <tr>
