@@ -25,10 +25,10 @@
   </tr>
 
    <tr>
-    <td>name</td>
-    <td>id</td>
-    <td>course</td>
-    <td>email</td>
+    <td>Sonali Patel</td>
+    <td>40176580</td>
+    <td>GG</td>
+    <td>sonalipatel06@hotmail.com</td>
   </tr>
 
   </table>
