@@ -1,31 +1,23 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import flights.Flight;
+import users.User;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String jdbcUrl = "jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\usersdb.db";
+        User user = new User(001);
 
-        try {
-            Connection connection = DriverManager.getConnection(jdbcUrl);
-            String sql = "SELECT * FROM registeredUsers";
+        // Call the getFlightDetails method with a flight number
+        String flightNumber = "AC305";
+        Flight flight = user.getFlightDetails(flightNumber);
 
-            Statement statement = connection.createStatement();
-
-            ResultSet result = statement.executeQuery(sql);
-
-            while (result.next()) {
-                String username = result.getString("username");
-                System.out.println(username);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error");
-            e.printStackTrace();
+        // Check if flight details were found
+        if (flight != null) {
+            // Print flight details
+            System.out.println("Flight Number: " + flight.getF_number());
+            System.out.println("Source: " + flight.getSource().getAp_name());
+            System.out.println("Destination: " + flight.getDestination().getAp_name());
+        } else {
+            System.out.println("Flight not found.");
         }
-
     }
 }

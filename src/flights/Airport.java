@@ -9,6 +9,10 @@ public class Airport {
         this.ap_code = ap_code;
     }
 
+    public Airport(String ap_name) {
+        this.ap_name = ap_name;
+    }
+
     public String getAp_name() {
         return ap_name;
     }
@@ -19,6 +23,10 @@ public class Airport {
 
     public String getAp_code() {
         return ap_code;
+    }
+
+    public void setAp_code(String ap_code) {
+        this.ap_code = ap_code;
     }
 
 }
