@@ -19,7 +19,7 @@ public class App {
             System.out.println("Flight not found.");
         }
 
-        RegisteredUser registeredUser = new RegisteredUser(1, "username");
+        RegisteredUser registeredUser = new RegisteredUser(1, "j_sivalingam");
 
         // Call the getFlightDetails method
         FlightDetails flightDetails = registeredUser.getFlightDetails("AC405");

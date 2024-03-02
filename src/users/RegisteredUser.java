@@ -20,8 +20,23 @@ public class RegisteredUser extends User {
         try {
             this.connection = DriverManager
                     .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
-        } catch (SQLException e) {
+
+            if (!isValidUser(u_name)) {
+                throw new IllegalArgumentException("Invalid username: " + u_name);
+            }
+        }
+
+        catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean isValidUser(String u_name) throws SQLException {
+        String query = "SELECT * FROM registeredUsers WHERE u_name = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, u_name);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // Returns true if username exists, false otherwise
         }
     }
 
