@@ -39,17 +39,43 @@ public class User {
             pstmt.setString(1, f_number);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                // Retrieve data from the result set
+
+                // Retrieve data
                 String number = rs.getString("number");
                 String source = rs.getString("source");
                 String destination = rs.getString("destination");
+
+                // Fetch airport details for source
+                Airport sourceAirport = getAirportDetails(source);
+
+                // Fetch airport details for destination
+                Airport destAirport = getAirportDetails(destination);
+
                 // Create the Flight object
-                flight = new Flight(number, new Airport(source), new Airport(destination));
+                flight = new Flight(number, sourceAirport, destAirport);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return flight;
+    }
+
+    public Airport getAirportDetails(String airport) throws SQLException {
+        String query = "SELECT ap_name, ap_code FROM airports WHERE ap_name = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, airport);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+
+                // Retrieve data
+                String ap_name = rs.getString("ap_name");
+                String ap_code = rs.getString("ap_code");
+
+                // Create and return the Airport object
+                return new Airport(ap_name, ap_code);
+            }
+        }
+        return null;
     }
 
 }

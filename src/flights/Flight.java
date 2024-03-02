@@ -36,4 +36,10 @@ public class Flight {
         this.destination = destination;
     }
 
+    public String toString() {
+        return "Flight Number: " + f_number + "\n" +
+                "Source: " + source + "\n" +
+                "Destination: " + destination;
+    }
+
 }

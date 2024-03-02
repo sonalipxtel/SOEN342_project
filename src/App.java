@@ -1,4 +1,6 @@
 import flights.Flight;
+import flights.FlightDetails;
+import users.RegisteredUser;
 import users.User;
 
 public class App {
@@ -12,12 +14,21 @@ public class App {
 
         // Check if flight details were found
         if (flight != null) {
-            // Print flight details
-            System.out.println("Flight Number: " + flight.getF_number());
-            System.out.println("Source: " + flight.getSource().getAp_name());
-            System.out.println("Destination: " + flight.getDestination().getAp_name());
+            System.out.println(flight);
         } else {
             System.out.println("Flight not found.");
+        }
+
+        RegisteredUser registeredUser = new RegisteredUser(1, "username");
+
+        // Call the getFlightDetails method
+        FlightDetails flightDetails = registeredUser.getFlightDetails("AC405");
+
+        // Check if flightDetails is not null
+        if (flightDetails != null) {
+            System.out.println(flightDetails);
+        } else {
+            System.out.println("Flight details not found.");
         }
     }
 }

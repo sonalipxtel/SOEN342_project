@@ -9,6 +9,7 @@ public class Airport {
         this.ap_code = ap_code;
     }
 
+    // Method used in User class
     public Airport(String ap_name) {
         this.ap_name = ap_name;
     }
@@ -27,6 +28,10 @@ public class Airport {
 
     public void setAp_code(String ap_code) {
         this.ap_code = ap_code;
+    }
+
+    public String toString() {
+        return "Airport Name: " + ap_name + ", Airport Code: " + ap_code;
     }
 
 }

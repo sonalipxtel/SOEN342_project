@@ -67,4 +67,14 @@ public class FlightDetails extends Flight {
         this.actual_arr = actual_arr;
     }
 
+    public String toString() {
+        return super.toString() + "\n" +
+                "Airline: " + airline + "\n" +
+                "Aircraft: " + aircraft + "\n" +
+                "Scheduled Departure: " + scheduled_dep + "\n" +
+                "Actual Departure: " + actual_dep + "\n" +
+                "Scheduled Arrival: " + scheduled_arr + "\n" +
+                "Actual Arrival: " + actual_arr;
+    }
+
 }
