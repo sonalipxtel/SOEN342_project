@@ -1,32 +1,72 @@
 import flights.Flight;
 import flights.FlightDetails;
-import users.RegisteredUser;
-import users.User;
+import flights.PrivateFlight;
+import users.*;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
-        User user = new User(001);
 
-        // Call the getFlightDetails method with a flight number
-        String flightNumber = "AC305";
-        Flight flight = user.getFlightDetails(flightNumber);
+        // // TESTING USER
+        User user_1 = new User(001);
+        Flight flight_1 = user_1.getFlightDetails("AC305");
 
-        // Check if flight details were found
-        if (flight != null) {
-            System.out.println(flight);
+        if (flight_1 != null) {
+            System.out.println(flight_1);
         } else {
             System.out.println("Flight not found.");
         }
 
-        RegisteredUser registeredUser = new RegisteredUser(1, "j_sivalingam");
+        User user_2 = new User(002);
+        Flight flight_2 = user_2.getFlightDetails("Montréal-Pierre Elliott Trudeau International Airport",
+                "Vancouver International Airport");
 
-        // Call the getFlightDetails method
-        FlightDetails flightDetails = registeredUser.getFlightDetails("AC405");
+        if (flight_2 != null) {
+            System.out.println(flight_2);
+        } else {
+            System.out.println("Flight not found.");
+        }
 
-        // Check if flightDetails is not null
-        if (flightDetails != null) {
-            System.out.println(flightDetails);
+        // // TESTING REGISTERED USER
+        RegisteredUser registeredUser_1 = new RegisteredUser(1, "j_sivalingam");
+        FlightDetails flightDetails_1 = registeredUser_1.getFlightDetails("AC405");
+
+        if (flightDetails_1 != null) {
+            System.out.println(flightDetails_1);
+        } else {
+            System.out.println("Flight details not found.");
+        }
+
+        RegisteredUser registeredUser_2 = new RegisteredUser(2, "s_patel");
+        FlightDetails flightDetails_2 = registeredUser_2.getFlightDetails("AC405");
+
+        if (flightDetails_2 != null) {
+            System.out.println(flightDetails_2);
+        } else {
+            System.out.println("Flight details not found.");
+        }
+
+        // // TESTING ADMINISTRATOR
+        Administrator administrator_1 = new Administrator(1, "je_sivalingam",
+                Type.AIRPORT);
+        PrivateFlight privateFlight_1 = administrator_1.getPrivateFlight("AC1004",
+                "je_sivalingam");
+
+        if (privateFlight_1 != null) {
+            System.out.println(privateFlight_1);
+        } else {
+            System.out.println("Flight details not found.");
+        }
+
+        Administrator administrator_2 = new Administrator(2, "so_patel",
+                Type.AIRPORT);
+        PrivateFlight privateFlight_2 = administrator_2.getPrivateFlight(
+                "Montréal-Pierre Elliott Trudeau International Airport",
+                "Fort Lauderdale-Hollywood International Airport",
+                "so_patel");
+
+        if (privateFlight_2 != null) {
+            System.out.println(privateFlight_2);
         } else {
             System.out.println("Flight details not found.");
         }

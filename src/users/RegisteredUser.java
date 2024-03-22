@@ -88,6 +88,41 @@ public class RegisteredUser extends User {
 
     }
 
+    public FlightDetails getFlightDetails(String source, String destination) {
+        FlightDetails flightDetails = null;
+        String query = "SELECT number, airline, aircraft, scheduled_dep, actual_dep, scheduled_arr, actual_arr FROM flights WHERE source = ? AND destination = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, source);
+            pstmt.setString(2, destination);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                // Retrieve data
+                String number = rs.getString("number");
+                String airline = rs.getString("airline");
+                String aircraft = rs.getString("aircraft");
+                String scheduled_dep = rs.getString("scheduled_dep");
+                String actual_dep = rs.getString("actual_dep");
+                String scheduled_arr = rs.getString("scheduled_arr");
+                String actual_arr = rs.getString("actual_arr");
+
+                // Creating airport objects for source and destination
+                Airport sourceAirport = getAirportDetails(source);
+                Airport destAirport = getAirportDetails(destination);
+
+                // Creating airline and aircraft objects
+                Airline usedAirline = getAirlineDetails(airline);
+                Aircraft usedAircraft = getAircraftDetails(aircraft);
+
+                flightDetails = new FlightDetails(number, sourceAirport, destAirport,
+                        usedAirline, usedAircraft, scheduled_dep, actual_dep, scheduled_arr,
+                        actual_arr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flightDetails;
+    }
+
     public Airline getAirlineDetails(String airline) throws SQLException {
         String query = "SELECT al_name, al_code FROM airlines WHERE al_name = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {

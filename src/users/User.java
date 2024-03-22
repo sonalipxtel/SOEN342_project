@@ -60,6 +60,30 @@ public class User {
         return flight;
     }
 
+    public Flight getFlightDetails(String source, String destination) {
+        Flight flight = null;
+        String query = "SELECT number FROM flights WHERE source = ? AND destination = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, source);
+            pstmt.setString(2, destination);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String flightNumber = rs.getString("number");
+                // Fetch airport details for source
+                Airport sourceAirport = getAirportDetails(source);
+
+                // Fetch airport details for destination
+                Airport destAirport = getAirportDetails(destination);
+
+                // Create the Flight object
+                flight = new Flight(flightNumber, sourceAirport, destAirport);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return flight;
+    }
+
     public Airport getAirportDetails(String airport) throws SQLException {
         String query = "SELECT ap_name, ap_code FROM airports WHERE ap_name = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
