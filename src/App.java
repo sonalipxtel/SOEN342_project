@@ -1,13 +1,11 @@
-import flights.Flight;
-import flights.FlightDetails;
-import flights.PrivateFlight;
+import flights.*;
 import users.*;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
 
-        // // TESTING USER
+        // TESTING USER
         User user_1 = new User(001);
         Flight flight_1 = user_1.getFlightDetails("AC305");
 
@@ -70,5 +68,14 @@ public class App {
         } else {
             System.out.println("Flight details not found.");
         }
+
+        // TESTING FLIGHT REGISTERING
+
+        /*
+         * only airlines can register a flight into the flights database
+         * 
+         * only airport can register a private flight into the flights database
+         */
+
     }
 }

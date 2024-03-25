@@ -16,6 +16,7 @@ public class User {
     public User(int u_id) {
         this.u_id = u_id;
 
+        // Connect to the database
         try {
             this.connection = DriverManager
                     .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
