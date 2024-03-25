@@ -18,7 +18,6 @@ public class Airline {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
-            addAirline();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,13 +41,6 @@ public class Airline {
 
     public String toString() {
         return "Airline Name: " + al_name + ", Airline Code: " + al_code;
-    }
-
-    private void addAirline() throws SQLException {
-        statement = connection.createStatement();
-        String query = "INSERT INTO airlines (al_name, al_code) VALUES ('" + al_name + "', '" + al_code + "')";
-        statement.executeUpdate(query);
-        System.out.println("Airline added to the database successfully.");
     }
 
     public static void registerFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr) {
@@ -95,9 +87,10 @@ public class Airline {
 
     public static boolean checkAircraftAvailability(Aircraft aircraft) throws SQLException {
         String aircraftRegistrationNumber = aircraft.getRegistrationNumber();
-        String query = "SELECT COUNT(*) FROM aircrafts WHERE registrationNumber = ? AND isAvailable = 1";
+        String query = "SELECT COUNT(*) FROM aircrafts WHERE registrationNumber = ? AND status = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, aircraftRegistrationNumber);
+        preparedStatement.setString(2, Status.ON_LAND.name()); 
         resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             int count = resultSet.getInt(1);

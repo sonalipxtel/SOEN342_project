@@ -69,6 +69,10 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
+        // System administrators can enter records on airports.
+        Administrator administrator_3 = new Administrator(3, "sonali_patel", Type.SYSTEM);
+        administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
+
         // TESTING FLIGHT REGISTERING
 
         /*
