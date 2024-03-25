@@ -1,11 +1,6 @@
 package users;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.sql.*;
 import flights.*;
 
 public class Administrator extends User {
@@ -13,6 +8,7 @@ public class Administrator extends User {
     private String u_name;
     private Type adminType;
     private Connection connection;
+    private static Statement statement;
 
     public Administrator(int u_id, String u_name, Type adminType) {
         super(u_id);
@@ -178,6 +174,24 @@ public class Administrator extends User {
             }
         }
         return null;
+    }
+
+    // System administrators can enter records on airports.
+    public void addAirport(String ap_name, String ap_code) {
+        if(adminType == Type.SYSTEM) {
+            try {
+                // Insert airport record into the database
+                statement = connection.createStatement();
+                String query = "INSERT INTO airports (ap_name, ap_code) " +
+                        "VALUES ('" + ap_name + "', '" + ap_code + "')";
+                statement.executeUpdate(query);
+                System.out.println("Airport added successfully.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Only SYSTEM administrators can add airports.");
+        }
     }
 
 }
