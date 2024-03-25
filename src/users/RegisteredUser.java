@@ -17,6 +17,7 @@ public class RegisteredUser extends User {
         super(u_id);
         this.u_name = u_name;
 
+        // Connect to the database
         try {
             this.connection = DriverManager
                     .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
@@ -25,9 +26,7 @@ public class RegisteredUser extends User {
             if (!isValidUser(u_name)) {
                 throw new IllegalArgumentException("Invalid username: " + u_name);
             }
-        }
-
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -45,6 +44,7 @@ public class RegisteredUser extends User {
         return u_name;
     }
 
+     // Get flight using flight number
     public FlightDetails getFlightDetails(String f_number) {
         FlightDetails flightdetails = null;
         String query = "SELECT number, source, destination, airline, aircraft, scheduled_dep, actual_dep, scheduled_arr, actual_arr FROM flights WHERE number = ?";
@@ -88,6 +88,7 @@ public class RegisteredUser extends User {
 
     }
 
+     // Get flight using source/destination and user name
     public FlightDetails getFlightDetails(String source, String destination) {
         FlightDetails flightDetails = null;
         String query = "SELECT number, airline, aircraft, scheduled_dep, actual_dep, scheduled_arr, actual_arr FROM flights WHERE source = ? AND destination = ?";

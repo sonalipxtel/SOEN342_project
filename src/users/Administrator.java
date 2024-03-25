@@ -19,6 +19,7 @@ public class Administrator extends User {
         this.u_name = u_name;
         this.adminType = adminType;
 
+        // Connect to the database
         try {
             this.connection = DriverManager
                     .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
@@ -51,6 +52,7 @@ public class Administrator extends User {
         this.adminType = adminType;
     }
 
+    // Get private flight using flight number and user name
     public PrivateFlight getPrivateFlight(String f_number, String u_name) {
         PrivateFlight privateflightdetails = null;
         String query = "SELECT pf.number, pf.source, pf.destination, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr "
@@ -98,6 +100,7 @@ public class Administrator extends User {
         return privateflightdetails;
     }
 
+     // Get private flight using source/destination and user name
     public PrivateFlight getPrivateFlight(String source, String destination, String u_name) {
         PrivateFlight privateFlightDetails = null;
         String query = "SELECT pf.number, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr "
