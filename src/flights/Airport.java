@@ -15,12 +15,13 @@ public class Airport {
         this.ap_name = ap_name;
         this.ap_code = ap_code;
 
-        try {
-            // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // try {
+        // // Connect to the database
+        // connection =
+        // DriverManager.getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+        // } catch (SQLException e) {
+        // e.printStackTrace();
+        // }
     }
 
     // Method used in User class
@@ -48,7 +49,8 @@ public class Airport {
         return "Airport Name: " + ap_name + ", Airport Code: " + ap_code;
     }
 
-    public static void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr) {
+    public static void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline,
+            Aircraft aircraft, String scheduledDep, String scheduledArr) {
         try {
             // Check if scheduled departure and arrival times are unique to the airport
             boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);
@@ -60,8 +62,10 @@ public class Airport {
                 if (isAircraftAvailable) {
                     // Insert flight into the database
                     statement = connection.createStatement();
-                    String query = "INSERT INTO flights (flightNumber, sourceAirportCode, scheduledDepartureTime, scheduledArrivalTime, aircraftRegistrationNumber) " +
-                            "VALUES ('" + f_number + "', '" + source.getAp_code() + "', '" + scheduledDep + "', '" + scheduledArr + "', '" + aircraft.getRegistrationNumber() + "')";
+                    String query = "INSERT INTO flights (flightNumber, sourceAirportCode, scheduledDepartureTime, scheduledArrivalTime, aircraftRegistrationNumber) "
+                            +
+                            "VALUES ('" + f_number + "', '" + source.getAp_code() + "', '" + scheduledDep + "', '"
+                            + scheduledArr + "', '" + aircraft.getRegistrationNumber() + "')";
                     statement.executeUpdate(query);
                     System.out.println("Flight registered successfully.");
                 } else {
@@ -75,7 +79,8 @@ public class Airport {
         }
     }
 
-    public static boolean checkUniqueTimes(String ap_code, String scheduledDep, String scheduledArr) throws SQLException {
+    public static boolean checkUniqueTimes(String ap_code, String scheduledDep, String scheduledArr)
+            throws SQLException {
         String query = "SELECT COUNT(*) FROM flights WHERE sourceAirportCode = ? " +
                 "AND (scheduledDepartureTime = ? OR scheduledArrivalTime = ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -95,7 +100,7 @@ public class Airport {
         String query = "SELECT COUNT(*) FROM aircrafts WHERE registrationNumber = ? AND status = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, aircraftRegistrationNumber);
-        preparedStatement.setString(2, Status.ON_LAND.name()); 
+        preparedStatement.setString(2, Status.ON_LAND.name());
         resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             int count = resultSet.getInt(1);
@@ -103,6 +108,5 @@ public class Airport {
         }
         return false;
     }
-
 
 }

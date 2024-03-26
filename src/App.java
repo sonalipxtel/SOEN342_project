@@ -70,7 +70,7 @@ public class App {
         }
 
         // System administrators can enter records on airports.
-        Administrator administrator_3 = new Administrator(3, "sonali_patel", Type.SYSTEM);
+        Administrator administrator_3 = new Administrator(3, "no_burns", Type.AIRPORT);
         administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
 
         // TESTING FLIGHT REGISTERING
