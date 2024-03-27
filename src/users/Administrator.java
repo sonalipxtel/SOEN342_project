@@ -182,7 +182,6 @@ public class Administrator extends User {
     // Method to register non-private flight
     public void registerFlight(String f_number, String source, String destination, String airline, String aircraft,
             String scheduled_dep, String scheduled_arr, Type adminType) {
-        System.out.println("Only AIRLINE administrators can register flights.");
         if (adminType == Type.AIRLINE) {
             try {
                 // Check if scheduled departure and arrival times are unique to the airport
