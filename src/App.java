@@ -5,6 +5,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        // USE CASE 1
         // TESTING USER
         User user_1 = new User(001);
         Flight flight_1 = user_1.getFlightDetails("AC305");
@@ -57,7 +58,7 @@ public class App {
         }
 
         Administrator administrator_2 = new Administrator(2, "so_patel",
-                Type.AIRPORT);
+                Type.AIRLINE);
         PrivateFlight privateFlight_2 = administrator_2.getPrivateFlight(
                 "Montréal-Pierre Elliott Trudeau International Airport",
                 "Fort Lauderdale-Hollywood International Airport",
@@ -69,17 +70,29 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
-        // System administrators can enter records on airports.
-        Administrator administrator_3 = new Administrator(3, "sonali_patel", Type.SYSTEM);
-        administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
-
+        // USE CASE 2
         // TESTING FLIGHT REGISTERING
 
-        /*
-         * only airlines can register a flight into the flights database
-         * 
-         * only airport can register a private flight into the flights database
-         */
+        /* Testing registerFlight(...) */
+        Administrator administrator_4 = new Administrator(5, "jenisha_sivalingam",
+                Type.AIRLINE);
+
+        administrator_4.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
+                "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
+                "2024-03-20 12:30:00", administrator_4.getAdminType());
+
+        // /* Testing registerPrivateFlight(...) */
+        // Administrator administrator_5 = new Administrator(5, "je_sivalingam",
+        // Type.AIRPORT);
+        // Administrator.registerPrivateFlight("AC223", YUL, JFK, AC, airbus,
+        // "2024-03-20 09:30:00", "2024-03-20 12:30:00",
+        // administrator_5.getAdminType());
+
+        // USE CASE 3
+        // System administrators can enter records on airports.
+        // Administrator administrator_3 = new Administrator(4, "sonali_patel",
+        // Type.SYSTEM);
+        // administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
 
     }
 }
