@@ -6,8 +6,8 @@ import flights.*;
 public class Administrator extends User {
 
     private String u_name;
-    private Type adminType;
-    private Connection connection;
+    private static Type adminType;
+    private static Connection connection;
     private static Statement statement;
 
     public Administrator(int u_id, String u_name, Type adminType) {
@@ -176,7 +176,104 @@ public class Administrator extends User {
         return null;
     }
 
-    // System administrators can enter records on airports.
+
+    // Method to register non-private flight
+    public static void registerFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr, Type adminType) {
+        if (adminType == Type.AIRLINE) {
+            try {
+                // Check if scheduled departure and arrival times are unique to the airport
+                boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);
+    
+                if (isUnique) {
+                    // Check if there is an available aircraft in the source airport
+                    boolean isAircraftAvailable = checkAircraftAvailability(aircraft);
+    
+                    if (isAircraftAvailable) {
+                        // Insert flight into the database
+                        statement = connection.createStatement();
+                        String query = "INSERT INTO flights (f_number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) " +
+                            "VALUES ('" + f_number + "', '" + source.getAp_name() + "', '" + destination.getAp_name() + "', '"  + airline.getAl_name() + "', '" + aircraft.getModel() + "', '"  + scheduledDep + "', '" + scheduledArr + "')";
+                    statement.executeUpdate(query);
+                        System.out.println("Flight registered successfully.");
+                    } else {
+                        System.out.println("No available aircraft in the source airport.");
+                    }
+                } else {
+                    System.out.println("Scheduled departure and arrival times are not unique to the airport.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Only AIRLINE administrators can register flights.");
+        }
+    }
+    
+
+    // Method to register private flight
+    public static void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr, Type adminType) {
+        if (adminType == Type.AIRPORT) {
+            try {
+                // Check if scheduled departure and arrival times are unique to the airport
+                boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);
+    
+                if (isUnique) {
+                    // Check if there is an available aircraft in the source airport
+                    boolean isAircraftAvailable = checkAircraftAvailability(aircraft);
+    
+                    if (isAircraftAvailable) {
+                        // Insert flight into the database
+                        statement = connection.createStatement();
+                        String query = "INSERT INTO privateflights (f_number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) " +
+                            "VALUES ('" + f_number + "', '" + source.getAp_name() + "', '" + destination.getAp_name() + "', '"  + airline.getAl_name() + "', '" + aircraft.getModel() + "', '"  + scheduledDep + "', '" + scheduledArr + "')";
+                    statement.executeUpdate(query);
+                        System.out.println("Private Flight registered successfully.");
+                    } else {
+                        System.out.println("No available aircraft in the source airport.");
+                    }
+                } else {
+                    System.out.println("Scheduled departure and arrival times are not unique to the airport.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Only AIRPORT administrators can register flights.");
+        }
+    }
+
+    // Method to check if the time for the flight is unique to the airport
+    public static boolean checkUniqueTimes(String ap_code, String scheduledDep, String scheduledArr) throws SQLException {
+        String query = "SELECT COUNT(*) FROM flights WHERE sourceAirportCode = ? " +
+                "AND (scheduledDepartureTime = ? OR scheduledArrivalTime = ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, ap_code);
+        preparedStatement.setString(2, scheduledDep);
+        preparedStatement.setString(3, scheduledArr);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int count = resultSet.getInt(1);
+            return count == 0;
+        }
+        return false;
+    }
+
+    // Method to check if the aircraft is available at the source airport
+    public static boolean checkAircraftAvailability(Aircraft aircraft) throws SQLException {
+        String aircraftRegistrationNumber = aircraft.getRegistrationNumber();
+        String query = "SELECT COUNT(*) FROM aircrafts WHERE registrationNumber = ? AND status = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, aircraftRegistrationNumber);
+        preparedStatement.setString(2, Status.ON_LAND.name()); 
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int count = resultSet.getInt(1);
+            return count > 0;
+        }
+        return false;
+    }
+
+    // Method to enter airport records into the database
     public void addAirport(String ap_name, String ap_code) {
         if(adminType == Type.SYSTEM) {
             try {

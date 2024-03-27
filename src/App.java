@@ -69,17 +69,22 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
-        // System administrators can enter records on airports.
+        // // TESTING FLIGHT REGISTERING - USE CASE 2
+        Airport JFK = new Airport("John F. Kennedy International Airport", "JFK");
+        Airport YUL = new Airport("Montréal-Pierre Elliott Trudeau International Airport", "YUL");
+        Airline AC = new Airline("Air Canada", "AC");
+        Aircraft airbus = new Aircraft("Airbus_330-300", "333", Status.ON_LAND);
+
+        /* Testing registerFlight(...) */ 
+        Administrator administrator_4 = new Administrator(4, "so_patel", Type.AIRLINE);
+        Administrator.registerFlight("AC567", JFK, YUL, AC, airbus, "2024-03-20 09:30:00", "2024-03-20 12:30:00", administrator_4.getAdminType());
+
+        /* Testing registerPrivateFlight(...) */ 
+        Administrator administrator_5 = new Administrator(5, "je_sivalingam", Type.AIRPORT);
+        Administrator.registerPrivateFlight("AC223", YUL, JFK, AC, airbus, "2024-03-20 09:30:00", "2024-03-20 12:30:00", administrator_5.getAdminType());
+
+         // // TESTING USE CASE 3
         Administrator administrator_3 = new Administrator(3, "sonali_patel", Type.SYSTEM);
         administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
-
-        // TESTING FLIGHT REGISTERING
-
-        /*
-         * only airlines can register a flight into the flights database
-         * 
-         * only airport can register a private flight into the flights database
-         */
-
     }
 }
