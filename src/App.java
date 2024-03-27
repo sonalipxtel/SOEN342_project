@@ -77,7 +77,7 @@ public class App {
         Administrator administrator_4 = new Administrator(5, "jenisha_sivalingam",
                 Type.AIRLINE);
 
-        administrator_4.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
+        Administrator.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
                 "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
                 "2024-03-20 12:30:00", administrator_4.getAdminType());
 

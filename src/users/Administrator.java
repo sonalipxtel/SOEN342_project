@@ -7,9 +7,9 @@ public class Administrator extends User {
 
     private String u_name;
     private Type adminType;
-    private Connection connection;
-    private Statement statement;
-    private ResultSet resultSet;
+    private static Connection connection;
+    private static Statement statement;
+    private static ResultSet resultSet;
 
     public Administrator(int u_id, String u_name, Type adminType) {
         super(u_id);
@@ -180,7 +180,8 @@ public class Administrator extends User {
 
     // USE CASE 2 IMPLEMENTATION
     // Method to register non-private flight
-    public void registerFlight(String f_number, String source, String destination, String airline, String aircraft,
+    public static void registerFlight(String f_number, String source, String destination, String airline,
+            String aircraft,
             String scheduled_dep, String scheduled_arr, Type adminType) {
         if (adminType == Type.AIRLINE) {
             try {
@@ -216,7 +217,7 @@ public class Administrator extends User {
     }
 
     // Method to register private flight
-    public void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline,
+    public static void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline,
             String aircraft, String scheduledDep, String scheduledArr, Type adminType) {
         if (adminType == Type.AIRPORT) {
             try {
@@ -252,7 +253,8 @@ public class Administrator extends User {
     }
 
     // Method to check if the time for the flight is unique to the airport
-    public boolean checkUniqueTimes(String source, String scheduled_dep, String scheduled_arr) throws SQLException {
+    public static boolean checkUniqueTimes(String source, String scheduled_dep, String scheduled_arr)
+            throws SQLException {
         String query = "SELECT COUNT(*) FROM flights WHERE source = ? " +
                 "AND (scheduled_dep = ? OR scheduled_arr = ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -268,7 +270,7 @@ public class Administrator extends User {
     }
 
     // Method to check if the aircraft is available at the source airport
-    public boolean checkAircraftAvailability(String model) throws SQLException {
+    public static boolean checkAircraftAvailability(String model) throws SQLException {
         try {
             String query = "SELECT COUNT(*) FROM aircrafts WHERE model = ? AND status = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
