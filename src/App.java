@@ -29,6 +29,7 @@ public class App {
         }
 
         System.out.println();
+        System.out.println();
 
         // // TESTING REGISTERED USER
         RegisteredUser registeredUser_1 = new RegisteredUser(1, "j_sivalingam");
@@ -52,6 +53,7 @@ public class App {
         }
 
         System.out.println();
+        System.out.println();
 
         // // TESTING ADMINISTRATOR
         Administrator administrator_1 = new Administrator(1, "je_sivalingam",
@@ -65,6 +67,7 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
+        System.out.println();
         System.out.println();
 
         // USE CASE 2
@@ -85,6 +88,7 @@ public class App {
                 "John F. Kennedy International Airport", "Air_Canada", "Airbus_A319-100",
                 "2024-05-25 10:30:00", "2024-05-26 11:45:00", administrator_3.getAdminType());
 
+        System.out.println();
         System.out.println();
 
         // USE CASE 3
