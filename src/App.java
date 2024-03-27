@@ -57,19 +57,6 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
-        Administrator administrator_2 = new Administrator(2, "so_patel",
-                Type.AIRLINE);
-        PrivateFlight privateFlight_2 = administrator_2.getPrivateFlight(
-                "Montréal-Pierre Elliott Trudeau International Airport",
-                "Fort Lauderdale-Hollywood International Airport",
-                "so_patel");
-
-        if (privateFlight_2 != null) {
-            System.out.println(privateFlight_2);
-        } else {
-            System.out.println("Flight details not found.");
-        }
-
         // USE CASE 2
         // TESTING FLIGHT REGISTERING
 
@@ -77,7 +64,7 @@ public class App {
         Administrator administrator_4 = new Administrator(5, "jenisha_sivalingam",
                 Type.AIRLINE);
 
-        Administrator.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
+        administrator_4.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
                 "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
                 "2024-03-20 12:30:00", administrator_4.getAdminType());
 
