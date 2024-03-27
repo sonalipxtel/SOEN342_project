@@ -11,7 +11,7 @@
   </tr>
 
   <tr>
-    <td>Jenisha Sivalingam</td>
+    <td>Jenisha Sivalingam (Team Leader)</td>
     <td>40247937</td>
     <td>GG</td>
     <td>jenisha.siv@gmail.com</td>
