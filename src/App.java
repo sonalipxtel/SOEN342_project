@@ -72,14 +72,14 @@ public class App {
 
         // USE CASE 2
         // Testing registerFlight
-        Administrator administrator_5 = new Administrator(5, "jenisha_sivalingam",
-                Type.AIRLINE);
+        // Administrator administrator_5 = new Administrator(5, "jenisha_sivalingam",
+        //         Type.AIRLINE);
 
-        administrator_5.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
-                "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
-                "2024-03-20 12:30:00", administrator_5.getAdminType());
+        // administrator_5.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
+        //         "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
+        //         "2024-03-20 12:30:00", administrator_5.getAdminType());
 
-        System.out.println();
+        // System.out.println();
 
         // Testing registerPrivateFlight
         Administrator administrator_3 = new Administrator(3, "no_burns",
