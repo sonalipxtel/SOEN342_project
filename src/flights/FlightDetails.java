@@ -31,7 +31,7 @@ public class FlightDetails extends Flight {
         return aircraft;
     }
 
-    public void setF_number(Aircraft aircraft) {
+    public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
     }
 
