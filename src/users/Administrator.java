@@ -325,4 +325,15 @@ public class Administrator extends User {
         }
     }
 
+    // Close the connection to the database
+    public void closeConnection() {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
