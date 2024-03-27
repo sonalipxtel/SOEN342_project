@@ -18,12 +18,12 @@ public class Administrator extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:src/Database/flightsdb.db");
+                    .getConnection("jdbc:sqlite:/Users/noahburns/SOEN342_Project/src/Database/flightsdb.db");
 
             // Checking if the username is valid
-            if (!isValidAdministrator(u_name)) {
-                throw new IllegalArgumentException("Invalid username: " + u_name);
-            }
+//            if (!isValidAdministrator(u_name)) {
+//                throw new IllegalArgumentException("Invalid username: " + u_name);
+//            }
         }
 
         catch (SQLException e) {
