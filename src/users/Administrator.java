@@ -6,9 +6,10 @@ import flights.*;
 public class Administrator extends User {
 
     private String u_name;
-    private static Type adminType;
+    private Type adminType;
     private static Connection connection;
     private static Statement statement;
+    private static ResultSet resultSet;
 
     public Administrator(int u_id, String u_name, Type adminType) {
         super(u_id);
@@ -48,6 +49,7 @@ public class Administrator extends User {
         this.adminType = adminType;
     }
 
+    // USE CASE 1 - IMPLEMENTATION
     // Get private flight using flight number and user name
     public PrivateFlight getPrivateFlight(String f_number, String u_name) {
         PrivateFlight privateflightdetails = null;
@@ -96,7 +98,7 @@ public class Administrator extends User {
         return privateflightdetails;
     }
 
-     // Get private flight using source/destination and user name
+    // Get private flight using source/destination and user name
     public PrivateFlight getPrivateFlight(String source, String destination, String u_name) {
         PrivateFlight privateFlightDetails = null;
         String query = "SELECT pf.number, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr "
@@ -176,24 +178,29 @@ public class Administrator extends User {
         return null;
     }
 
-
+    // USE CASE 2 IMPLEMENTATION
     // Method to register non-private flight
-    public static void registerFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr, Type adminType) {
+    public void registerFlight(String f_number, String source, String destination, String airline,
+            String aircraft,
+            String scheduled_dep, String scheduled_arr, Type adminType) {
         if (adminType == Type.AIRLINE) {
             try {
                 // Check if scheduled departure and arrival times are unique to the airport
-                boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);
-    
+                boolean isUnique = checkUniqueTimes(source, scheduled_dep, scheduled_arr);
+
                 if (isUnique) {
                     // Check if there is an available aircraft in the source airport
                     boolean isAircraftAvailable = checkAircraftAvailability(aircraft);
-    
+
                     if (isAircraftAvailable) {
                         // Insert flight into the database
                         statement = connection.createStatement();
-                        String query = "INSERT INTO flights (f_number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) " +
-                            "VALUES ('" + f_number + "', '" + source.getAp_name() + "', '" + destination.getAp_name() + "', '"  + airline.getAl_name() + "', '" + aircraft.getModel() + "', '"  + scheduledDep + "', '" + scheduledArr + "')";
-                    statement.executeUpdate(query);
+                        String query = "INSERT INTO flights (number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) "
+                                +
+                                "VALUES ('" + f_number + "', '" + source + "', '"
+                                + destination + "', '" + airline + "', '"
+                                + aircraft + "', '" + scheduled_dep + "', '" + scheduled_arr + "')";
+                        statement.executeUpdate(query);
                         System.out.println("Flight registered successfully.");
                     } else {
                         System.out.println("No available aircraft in the source airport.");
@@ -208,25 +215,28 @@ public class Administrator extends User {
             System.out.println("Only AIRLINE administrators can register flights.");
         }
     }
-    
 
     // Method to register private flight
-    public static void registerPrivateFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr, Type adminType) {
+    public void registerPrivateFlight(String f_number, String source, String destination, String airline,
+            String aircraft, String scheduledDep, String scheduledArr, Type adminType) {
         if (adminType == Type.AIRPORT) {
             try {
                 // Check if scheduled departure and arrival times are unique to the airport
-                boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);
-    
+                boolean isUnique = checkPrivateUniqueTimes(source, scheduledDep, scheduledArr);
+
                 if (isUnique) {
                     // Check if there is an available aircraft in the source airport
                     boolean isAircraftAvailable = checkAircraftAvailability(aircraft);
-    
+
                     if (isAircraftAvailable) {
                         // Insert flight into the database
                         statement = connection.createStatement();
-                        String query = "INSERT INTO privateflights (f_number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) " +
-                            "VALUES ('" + f_number + "', '" + source.getAp_name() + "', '" + destination.getAp_name() + "', '"  + airline.getAl_name() + "', '" + aircraft.getModel() + "', '"  + scheduledDep + "', '" + scheduledArr + "')";
-                    statement.executeUpdate(query);
+                        String query = "INSERT INTO privateflights (number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) "
+                                +
+                                "VALUES ('" + f_number + "', '" + source + "', '"
+                                + destination + "', '" + airline + "', '"
+                                + aircraft + "', '" + scheduledDep + "', '" + scheduledArr + "')";
+                        statement.executeUpdate(query);
                         System.out.println("Private Flight registered successfully.");
                     } else {
                         System.out.println("No available aircraft in the source airport.");
@@ -243,13 +253,31 @@ public class Administrator extends User {
     }
 
     // Method to check if the time for the flight is unique to the airport
-    public static boolean checkUniqueTimes(String ap_code, String scheduledDep, String scheduledArr) throws SQLException {
-        String query = "SELECT COUNT(*) FROM flights WHERE sourceAirportCode = ? " +
-                "AND (scheduledDepartureTime = ? OR scheduledArrivalTime = ?)";
+    public boolean checkUniqueTimes(String source, String scheduled_dep, String scheduled_arr)
+            throws SQLException {
+        String query = "SELECT COUNT(*) FROM flights WHERE source = ? " +
+                "AND (scheduled_dep = ? OR scheduled_arr = ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, ap_code);
-        preparedStatement.setString(2, scheduledDep);
-        preparedStatement.setString(3, scheduledArr);
+        preparedStatement.setString(1, source);
+        preparedStatement.setString(2, scheduled_dep);
+        preparedStatement.setString(3, scheduled_arr);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int count = resultSet.getInt(1);
+            return count == 0;
+        }
+        return false;
+    }
+
+    // Method to check if the time for the private flight is unique to the airport
+    public boolean checkPrivateUniqueTimes(String source, String scheduled_dep, String scheduled_arr)
+            throws SQLException {
+        String query = "SELECT COUNT(*) FROM privateflights WHERE source = ? " +
+                "AND (scheduled_dep = ? OR scheduled_arr = ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, source);
+        preparedStatement.setString(2, scheduled_dep);
+        preparedStatement.setString(3, scheduled_arr);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             int count = resultSet.getInt(1);
@@ -259,23 +287,29 @@ public class Administrator extends User {
     }
 
     // Method to check if the aircraft is available at the source airport
-    public static boolean checkAircraftAvailability(Aircraft aircraft) throws SQLException {
-        String aircraftRegistrationNumber = aircraft.getRegistrationNumber();
-        String query = "SELECT COUNT(*) FROM aircrafts WHERE registrationNumber = ? AND status = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, aircraftRegistrationNumber);
-        preparedStatement.setString(2, Status.ON_LAND.name()); 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            int count = resultSet.getInt(1);
-            return count > 0;
+    public boolean checkAircraftAvailability(String model) throws SQLException {
+        try {
+            String query = "SELECT COUNT(*) FROM aircrafts WHERE model = ? AND status = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, model);
+            preparedStatement.setString(2, "ON_LAND");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
         return false;
     }
 
-    // Method to enter airport records into the database
+    // USE CASE 3 -IMPLEMENTATION
+    // System administrators can enter records on airports.
     public void addAirport(String ap_name, String ap_code) {
-        if(adminType == Type.SYSTEM) {
+        if (adminType == Type.SYSTEM) {
             try {
                 // Insert airport record into the database
                 statement = connection.createStatement();
