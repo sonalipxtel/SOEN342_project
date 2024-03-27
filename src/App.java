@@ -5,8 +5,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        // -------------------------------------------USE CASE
-        // 1-----------------------------------------//
+        // USE CASE 1
         // TESTING USER
         User user_1 = new User(001);
         Flight flight_1 = user_1.getFlightDetails("AC305");
@@ -71,14 +70,11 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
-        // -------------------------------------------USE CASE
-        // 2-----------------------------------------//
+        // USE CASE 2
         // TESTING FLIGHT REGISTERING
 
-        // // TESTING FLIGHT REGISTERING - USE CASE 2
-
         /* Testing registerFlight(...) */
-        Administrator administrator_4 = new Administrator(4, "jenisha_sivalingam",
+        Administrator administrator_4 = new Administrator(5, "jenisha_sivalingam",
                 Type.AIRLINE);
 
         administrator_4.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
@@ -92,12 +88,11 @@ public class App {
         // "2024-03-20 09:30:00", "2024-03-20 12:30:00",
         // administrator_5.getAdminType());
 
-        // -------------------------------------------USE CASE
-        // 3-----------------------------------------//
+        // USE CASE 3
         // System administrators can enter records on airports.
-        Administrator administrator_3 = new Administrator(4, "sonali_patel",
-                Type.SYSTEM);
-        administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
+        // Administrator administrator_3 = new Administrator(4, "sonali_patel",
+        // Type.SYSTEM);
+        // administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
 
     }
 }
