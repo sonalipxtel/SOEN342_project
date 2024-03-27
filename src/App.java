@@ -5,7 +5,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        // TESTING USER
+        // USE CASE 1
+        // // TESTING NON-REGISTERED USER
         User user_1 = new User(001);
         Flight flight_1 = user_1.getFlightDetails("AC305");
 
@@ -14,6 +15,8 @@ public class App {
         } else {
             System.out.println("Flight not found.");
         }
+
+        System.out.println();
 
         User user_2 = new User(002);
         Flight flight_2 = user_2.getFlightDetails("Montréal-Pierre Elliott Trudeau International Airport",
@@ -25,6 +28,9 @@ public class App {
             System.out.println("Flight not found.");
         }
 
+        System.out.println();
+        System.out.println();
+
         // // TESTING REGISTERED USER
         RegisteredUser registeredUser_1 = new RegisteredUser(1, "j_sivalingam");
         FlightDetails flightDetails_1 = registeredUser_1.getFlightDetails("AC405");
@@ -35,6 +41,8 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
+        System.out.println();
+
         RegisteredUser registeredUser_2 = new RegisteredUser(2, "s_patel");
         FlightDetails flightDetails_2 = registeredUser_2.getFlightDetails("AC405");
 
@@ -43,6 +51,9 @@ public class App {
         } else {
             System.out.println("Flight details not found.");
         }
+
+        System.out.println();
+        System.out.println();
 
         // // TESTING ADMINISTRATOR
         Administrator administrator_1 = new Administrator(1, "je_sivalingam",
@@ -56,30 +67,40 @@ public class App {
             System.out.println("Flight details not found.");
         }
 
-        Administrator administrator_2 = new Administrator(2, "so_patel",
+        System.out.println();
+        System.out.println();
+        administrator_1.closeConnection();
+
+        // USE CASE 2
+        // Testing registerFlight
+        Administrator administrator_5 = new Administrator(5, "jenisha_sivalingam",
+                Type.AIRLINE);
+
+        administrator_5.registerFlight("AC567", "Montréal-Pierre Elliott Trudeau International Airport",
+                "John F. Kennedy International Airport", "Air_Canada", "Airbus_A220-300", "2024-03-20 09:30:00",
+                "2024-03-20 12:30:00", administrator_5.getAdminType());
+
+        System.out.println();
+        administrator_5.closeConnection();
+
+        // Testing registerPrivateFlight
+        Administrator administrator_3 = new Administrator(3, "no_burns",
                 Type.AIRPORT);
-        PrivateFlight privateFlight_2 = administrator_2.getPrivateFlight(
-                "Montréal-Pierre Elliott Trudeau International Airport",
-                "Fort Lauderdale-Hollywood International Airport",
-                "so_patel");
+        administrator_3.registerPrivateFlight("AC223", "Montréal-Pierre Elliott Trudeau International Airport",
+                "John F. Kennedy International Airport", "Air_Canada", "Airbus_A319-100",
+                "2024-05-25 10:30:00", "2024-05-26 11:45:00", administrator_3.getAdminType());
 
-        if (privateFlight_2 != null) {
-            System.out.println(privateFlight_2);
-        } else {
-            System.out.println("Flight details not found.");
-        }
+        System.out.println();
+        System.out.println();
 
+        administrator_3.closeConnection();
+
+        // USE CASE 3
         // System administrators can enter records on airports.
-        Administrator administrator_3 = new Administrator(3, "sonali_patel", Type.SYSTEM);
-        administrator_3.addAirport("John F. Kennedy International Airport", "JFK");
-
-        // TESTING FLIGHT REGISTERING
-
-        /*
-         * only airlines can register a flight into the flights database
-         * 
-         * only airport can register a private flight into the flights database
-         */
+        Administrator administrator_4 = new Administrator(4, "sonali_patel",
+                Type.SYSTEM);
+        administrator_4.addAirport("John F. Kennedy International Airport", "JFK");
+        administrator_4.closeConnection();
 
     }
 }
