@@ -231,7 +231,7 @@ public class Administrator extends User {
                     if (isAircraftAvailable) {
                         // Insert flight into the database
                         statement = connection.createStatement();
-                        String query = "INSERT INTO privateflights (f_number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) "
+                        String query = "INSERT INTO privateflights (number, source, destination, airline, aircraft, scheduled_dep, scheduled_arr) "
                                 +
                                 "VALUES ('" + f_number + "', '" + source + "', '"
                                 + destination + "', '" + airline + "', '"
