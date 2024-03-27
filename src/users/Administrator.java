@@ -7,9 +7,9 @@ public class Administrator extends User {
 
     private String u_name;
     private Type adminType;
-    private static Connection connection;
-    private static Statement statement;
-    private static ResultSet resultSet;
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
 
     public Administrator(int u_id, String u_name, Type adminType) {
         super(u_id);
