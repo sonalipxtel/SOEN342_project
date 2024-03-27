@@ -18,7 +18,7 @@ public class Administrator extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+                    .getConnection("jdbc:sqlite:src/Database/flightsdb.db");
 
             // Checking if the username is valid
             if (!isValidAdministrator(u_name)) {
@@ -38,6 +38,14 @@ public class Administrator extends User {
             ResultSet rs = pstmt.executeQuery();
             return rs.next(); // Returns true if username exists, false otherwise
         }
+    }
+
+    public String getU_name() {
+        return u_name;
+    }
+
+    public void setU_name(String u_name) {
+        this.u_name = u_name;
     }
 
     public Type getAdminType() {
