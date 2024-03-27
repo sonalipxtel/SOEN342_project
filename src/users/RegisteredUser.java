@@ -20,7 +20,7 @@ public class RegisteredUser extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+                    .getConnection("jdbc:sqlite:src/Database/flightsdb.db");
 
             // Checking if the username is valid
             if (!isValidUser(u_name)) {
