@@ -6,6 +6,7 @@ public class Airport {
     private String ap_name;
     private String ap_code;
 
+
     // JDBC variables for opening, closing, and managing connection
     private static Connection connection;
     private static Statement statement;
@@ -15,9 +16,10 @@ public class Airport {
         this.ap_name = ap_name;
         this.ap_code = ap_code;
 
+
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project-noah2.0/src/Database/flightsdb.db");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -25,18 +27,22 @@ public class Airport {
 
     // Method used in User class
     public Airport(String ap_name) {
+
         this.ap_name = ap_name;
     }
 
     public String getAp_name() {
+
         return ap_name;
     }
 
     public void setAp_name(String ap_name) {
+
         this.ap_name = ap_name;
     }
 
     public String getAp_code() {
+
         return ap_code;
     }
 

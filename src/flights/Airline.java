@@ -43,7 +43,7 @@ public class Airline {
         return "Airline Name: " + al_name + ", Airline Code: " + al_code;
     }
 
-    public static void registerFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr) {
+    public synchronized static void registerFlight(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft, String scheduledDep, String scheduledArr) {
         try {
             // Check if scheduled departure and arrival times are unique to the airport
             boolean isUnique = checkUniqueTimes(source.getAp_code(), scheduledDep, scheduledArr);

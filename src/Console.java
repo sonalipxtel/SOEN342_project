@@ -149,13 +149,15 @@ public class Console {
         scanner.nextLine(); // Consume newline
 
         System.out.print("Enter your admin type (SYSTEM, AIRPORT, AIRLINE): ");
-        String typeStr = scanner.next(); // Get admin type
+        String typeStr = scanner.nextLine(); // Get admin type
 
         try {
             System.out.println("\nAdministrator Operations:");
             System.out.println("1. Get private flight details by flight number");
             System.out.println("2. Get private flight details by source and destination");
             System.out.println("3. Add a new airport");
+            System.out.println("4 Register a flight");
+            System.out.println("5 Register a private flight");
             System.out.print("Select an operation: ");
             int operation = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -164,29 +166,40 @@ public class Console {
 
             switch (operation) {
                 case 1:
-                    System.out.print("\nEnter private flight number: ");
-                    String flightNumber = scanner.nextLine();
-                    PrivateFlight privateFlight = admin.getPrivateFlight(flightNumber, username);
+                    if (admin.getAdminType() == Type.AIRPORT) {
+                        System.out.print("\nEnter private flight number: ");
+                        String flightNumber = scanner.nextLine();
+                        System.out.print(flightNumber);
+                        PrivateFlight privateFlight = admin.getPrivateFlight(flightNumber, username);
 
-                    if (privateFlight != null) {
-                        System.out.println(privateFlight);
+                        if (privateFlight != null) {
+                            System.out.println(privateFlight);
+                        } else {
+                            System.out.println("\nPrivate flight details not found.");
+                        }
                     } else {
-                        System.out.println("\nPrivate flight details not found.");
+                        System.out.println("\nOnly AIRPORT administrators can view private flight details.");
                     }
+                    admin.closeConnection();
                     break;
                 case 2:
-                    System.out.print("\nEnter source airport name: ");
-                    String source = scanner.nextLine();
-                    System.out.print("Enter destination airport name: ");
-                    String destination = scanner.nextLine();
-                    PrivateFlight privateFlightByAirports = admin.getPrivateFlight(source, destination,
-                            admin.getU_name());
+                    if (admin.getAdminType() == Type.AIRPORT) {
+                        System.out.print("\nEnter source airport name: ");
+                        String source = scanner.nextLine();
+                        System.out.print("Enter destination airport name: ");
+                        String destination = scanner.nextLine();
+                        PrivateFlight privateFlightByAirports = admin.getPrivateFlight(source, destination,
+                                username);
 
-                    if (privateFlightByAirports != null) {
-                        System.out.println(privateFlightByAirports);
+                        if (privateFlightByAirports != null) {
+                            System.out.println(privateFlightByAirports);
+                        } else {
+                            System.out.println("\nPrivate flight details not found.");
+                        }
                     } else {
-                        System.out.println("\nPrivate flight details not found.");
+                        System.out.println("\nOnly AIRPORT administrators can view private flight details.");
                     }
+                    admin.closeConnection();
                     break;
                 case 3:
                     if (admin.getAdminType() == Type.SYSTEM) {
@@ -198,6 +211,55 @@ public class Console {
                     } else {
                         System.out.println("\nOnly SYSTEM administrators can add new airports.");
                     }
+                    admin.closeConnection();
+                    break;
+                case 4:
+                    if (admin.getAdminType() == Type.AIRLINE) {
+                        System.out.print("\nEnter flight number: ");
+                        String f_number = scanner.nextLine();
+                        System.out.print("\nEnter flight source: ");
+                        String f_source = scanner.nextLine();
+                        System.out.print("\nEnter flight destination: ");
+                        String f_destination = scanner.nextLine();
+                        System.out.print("\nEnter airline: ");
+                        String f_airline = scanner.nextLine();
+                        System.out.print("\nEnter aircaft model: ");
+                        String f_aircraft = scanner.nextLine();
+                        System.out.print("\nEnter departure time: ");
+                        String f_dep = scanner.nextLine();
+                        System.out.print("\nEnter arrival time: ");
+                        String f_arr = scanner.nextLine();
+
+                        admin.registerFlight(f_number, f_source, f_destination, f_airline, f_aircraft, f_dep, f_arr, admin.getAdminType());
+                        admin.closeConnection();
+                    } else {
+                        System.out.print("\nOnly AIRLINE administrators can register a flight");
+                    }
+                    admin.closeConnection();
+                    break;
+                case 5:
+                    if (admin.getAdminType() == Type.AIRPORT) {
+                        System.out.print("\nEnter flight number: ");
+                        String f_number = scanner.nextLine();
+                        System.out.print("\nEnter flight source: ");
+                        String f_source = scanner.nextLine();
+                        System.out.print("\nEnter flight destination: ");
+                        String f_destination = scanner.nextLine();
+                        System.out.print("\nEnter airline: ");
+                        String f_airline = scanner.nextLine();
+                        System.out.print("\nEnter aircaft model: ");
+                        String f_aircraft = scanner.nextLine();
+                        System.out.print("\nEnter departure time: ");
+                        String f_dep = scanner.nextLine();
+                        System.out.print("\nEnter arrival time: ");
+                        String f_arr = scanner.nextLine();
+
+                        admin.registerPrivateFlight(f_number, f_source, f_destination, f_airline, f_aircraft, f_dep, f_arr, admin.getAdminType());
+                        admin.closeConnection();
+                    } else {
+                        System.out.print("\nOnly AIRPORT administrators can register a private flight");
+                    }
+                    admin.closeConnection();
                     break;
                 default:
                     System.out.println("\nInvalid operation selected.");
