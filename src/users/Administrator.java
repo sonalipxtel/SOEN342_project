@@ -101,7 +101,7 @@ public class Administrator extends User {
     // Get private flight using source/destination and user name
     public PrivateFlight getPrivateFlight(String source, String destination, String u_name) {
         PrivateFlight privateFlightDetails = null;
-        String query = "SELECT pf.number, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr "
+        String query = "SELECT pf.number, pf.source, pf.destination, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr "
                 +
                 "FROM privateflights AS pf " +
                 "JOIN administrators AS a ON ((pf.source = a.specific OR pf.destination = a.specific) AND a.u_name = ?) "
@@ -328,9 +328,12 @@ public class Administrator extends User {
     // Close the connection to the database
     public void closeConnection() {
         try {
-            if (resultSet != null) resultSet.close();
-            if (statement != null) statement.close();
-            if (connection != null) connection.close();
+            if (resultSet != null)
+                resultSet.close();
+            if (statement != null)
+                statement.close();
+            if (connection != null)
+                connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
