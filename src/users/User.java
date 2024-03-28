@@ -19,7 +19,7 @@ public class User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project/src/Database/flightsdb.db");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,5 +102,4 @@ public class User {
         }
         return null;
     }
-
 }

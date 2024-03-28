@@ -20,12 +20,12 @@ public class RegisteredUser extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/C:\\SQLite\\sqlite-tools-win-x64-3450100\\flightsdb.db");
+                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project/src/Database/flightsdb.db");
 
             // Checking if the username is valid
-            if (!isValidUser(u_name)) {
-                throw new IllegalArgumentException("Invalid username: " + u_name);
-            }
+//            if (!isValidUser(u_name)) {
+//                throw new IllegalArgumentException("Invalid username: " + u_name);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,11 @@ public class RegisteredUser extends User {
      // Get flight using flight number
     public FlightDetails getFlightDetails(String f_number) {
         FlightDetails flightdetails = null;
-        String query = "SELECT number, source, destination, airline, aircraft, scheduled_dep, actual_dep, scheduled_arr, actual_arr FROM flights WHERE number = ?";
+        String query = "SELECT a.number, a.source, a.destination, a.airline, a.aircraft, a.scheduled_dep, a.actual_dep, a.scheduled_arr, a.actual_arr, " +
+                "c.c_name, c.c_country, c.c_temperature " +
+                "FROM flights AS a " +
+                "JOIN city AS c ON a.city_id = c.c_id " +
+                "WHERE a.number = ? ";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, f_number);
             ResultSet rs = pstmt.executeQuery();
@@ -63,7 +67,9 @@ public class RegisteredUser extends User {
                 String actual_dep = rs.getString("actual_dep");
                 String scheduled_arr = rs.getString("scheduled_arr");
                 String actual_arr = rs.getString("actual_arr");
-
+                String c_name = rs.getString("c_name");
+                String c_country = rs.getString("c_country");
+                int c_temperature = rs.getInt("c_temperature");
                 // Creating an airport object for 'source'
                 Airport sourceAirport = getAirportDetails(source);
 
@@ -76,10 +82,12 @@ public class RegisteredUser extends User {
                 // Creating an aircraft object
                 Aircraft usedAircraft = getAircraftDetails(aircraft);
 
+                City city = new City(c_name, c_country, c_temperature);
+
                 // Create the Flight object
                 flightdetails = new FlightDetails(number, sourceAirport, destAirport,
                         usedAirline, usedAircraft, scheduled_dep, actual_dep, scheduled_arr,
-                        actual_arr);
+                        actual_arr, city);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,7 +99,9 @@ public class RegisteredUser extends User {
      // Get flight using source/destination and user name
     public FlightDetails getFlightDetails(String source, String destination) {
         FlightDetails flightDetails = null;
-        String query = "SELECT number, airline, aircraft, scheduled_dep, actual_dep, scheduled_arr, actual_arr FROM flights WHERE source = ? AND destination = ?";
+        String query = "SELECT a.number, a.airline, a.aircraft, a.scheduled_dep, a.actual_dep, a.scheduled_arr, a.actual_arr, c.c_name, c.c_country, c.c_temperature " +
+                "FROM flights a JOIN city c ON a.city_id = c.c_id " +
+                "WHERE a.source = ? AND a.destination = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, source);
             pstmt.setString(2, destination);
@@ -105,6 +115,9 @@ public class RegisteredUser extends User {
                 String actual_dep = rs.getString("actual_dep");
                 String scheduled_arr = rs.getString("scheduled_arr");
                 String actual_arr = rs.getString("actual_arr");
+                String c_name = rs.getString("c_name");
+                String c_country = rs.getString("c_country");
+                int c_temperature = rs.getInt("c_temperature");
 
                 // Creating airport objects for source and destination
                 Airport sourceAirport = getAirportDetails(source);
@@ -114,9 +127,11 @@ public class RegisteredUser extends User {
                 Airline usedAirline = getAirlineDetails(airline);
                 Aircraft usedAircraft = getAircraftDetails(aircraft);
 
+                City city = new City(c_name, c_country, c_temperature);
+
                 flightDetails = new FlightDetails(number, sourceAirport, destAirport,
                         usedAirline, usedAircraft, scheduled_dep, actual_dep, scheduled_arr,
-                        actual_arr);
+                        actual_arr, city);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -160,5 +175,6 @@ public class RegisteredUser extends User {
         }
         return null;
     }
+
 
 }
