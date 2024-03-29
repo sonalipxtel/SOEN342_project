@@ -7,9 +7,13 @@ public class FlightDetails extends Flight {
     private String actual_dep;
     private String scheduled_arr;
     private String actual_arr;
+    private City city;
+
+
+
 
     public FlightDetails(String f_number, Airport source, Airport destination, Airline airline, Aircraft aircraft,
-            String scheduled_dep, String actual_dep, String scheduled_arr, String actual_arr) {
+            String scheduled_dep, String actual_dep, String scheduled_arr, String actual_arr, City city) {
         super(f_number, source, destination);
         this.airline = airline;
         this.aircraft = aircraft;
@@ -17,6 +21,7 @@ public class FlightDetails extends Flight {
         this.actual_dep = actual_dep;
         this.scheduled_arr = scheduled_arr;
         this.actual_arr = actual_arr;
+        this.city = city;
     }
 
     public Airline getAirline() {
@@ -74,7 +79,10 @@ public class FlightDetails extends Flight {
                 "Scheduled Departure: " + scheduled_dep + "\n" +
                 "Actual Departure: " + actual_dep + "\n" +
                 "Scheduled Arrival: " + scheduled_arr + "\n" +
-                "Actual Arrival: " + actual_arr;
+                "Actual Arrival: " + actual_arr + "\n" +
+                "City: " + city.getCityName() + "\n" +
+                "Country: " + city.getCountry() + "\n" +
+                "Temperature: " + city.getTemperature() + " C";
     }
 
 }
