@@ -19,7 +19,7 @@ public class Administrator extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project/src/Database/flightsdb.db");
+                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project-noah2.0/src/Database/flightsdb.db");
 
             // Checking if the username is valid
 //            if (!isValidAdministrator(u_name)) {
@@ -71,16 +71,16 @@ public class Administrator extends User {
                 // Retrieve data
                 String number = rs.getString("number");
                 String source = rs.getString("source");
-                String destination = rs.getString("destination"); // This should be the city name
+                String destination = rs.getString("destination");
                 String airline = rs.getString("airline");
                 String aircraft = rs.getString("aircraft");
                 String scheduled_dep = rs.getString("scheduled_dep");
                 String actual_dep = rs.getString("actual_dep");
                 String scheduled_arr = rs.getString("scheduled_arr");
                 String actual_arr = rs.getString("actual_arr");
-                String c_name = rs.getString("c_name"); // City name
-                String c_country = rs.getString("c_country"); // City country
-                int c_temperature = rs.getInt("c_temperature"); // City temperature
+                String c_name = rs.getString("c_name");
+                String c_country = rs.getString("c_country");
+                int c_temperature = rs.getInt("c_temperature");
 
                 // Assuming getAirportDetails takes the city name and retrieves the corresponding airport
                 Airport sourceAirport = getAirportDetails(source);
@@ -109,13 +109,12 @@ public class Administrator extends User {
     // Get private flight using source/destination and user name
     public PrivateFlight getPrivateFlight(String source, String destination, String u_name) {
         PrivateFlight privateFlightDetails = null;
-        // Adjusted SQL query to include city information
-        String query = "SELECT pf.number, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr, " +
+        String query = "SELECT pf.number, pf.source, pf.destination, pf.airline, pf.aircraft, pf.scheduled_dep, pf.actual_dep, pf.scheduled_arr, pf.actual_arr, " +
                 "c.c_name, c.c_country, c.c_temperature " +
                 "FROM privateflights AS pf " +
                 "JOIN city AS c ON pf.city_id = c.c_id " +
                 "JOIN administrators AS a ON ((pf.source = a.specific OR c.c_name = a.specific) AND a.u_name = ?) " +
-                "WHERE pf.source = ? AND c.c_name = ?";
+                "WHERE pf.source = ? AND pf.destination = ? AND c.c_name = ? ";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, u_name);
             pstmt.setString(2, source);
@@ -124,6 +123,8 @@ public class Administrator extends User {
             if (rs.next()) {
                 // Retrieve data
                 String number = rs.getString("number");
+                String f_source = rs.getString("source");
+                String f_destination = rs.getString("destination");
                 String airline = rs.getString("airline");
                 String aircraft = rs.getString("aircraft");
                 String scheduled_dep = rs.getString("scheduled_dep");
@@ -135,8 +136,8 @@ public class Administrator extends User {
                 int c_temperature = rs.getInt("c_temperature"); // City temperature
 
                 // Assuming getAirportDetails takes the city name and retrieves the corresponding airport
-                Airport sourceAirport = getAirportDetails(source);
-                Airport destinationAirport = getAirportDetails(destination);
+                Airport sourceAirport = getAirportDetails(f_source);
+                Airport destinationAirport = getAirportDetails(f_destination);
 
                 // Creating airline and aircraft objects
                 Airline usedAirline = getAirlineDetails(airline);

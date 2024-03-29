@@ -20,7 +20,7 @@ public class RegisteredUser extends User {
         // Connect to the database
         try {
             this.connection = DriverManager
-                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project/src/Database/flightsdb.db");
+                    .getConnection("jdbc:sqlite:/Users/noahburns/Downloads/SOEN342_project-noah2.0/src/Database/flightsdb.db");
 
             // Checking if the username is valid
 //            if (!isValidUser(u_name)) {
